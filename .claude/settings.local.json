@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(npx -y @angular/cli@17 new frontend --routing=true --style=scss --skip-git=true --skip-install=false)",
-      "PowerShell(ng version 2>&1)"
-    ]
-  }
-}
