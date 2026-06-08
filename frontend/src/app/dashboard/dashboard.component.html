@@ -1,0 +1,62 @@
+<div class="dashboard-layout">
+
+  <!-- Toolbar -->
+  <mat-toolbar class="toolbar">
+    <mat-icon class="logo-icon">storage</mat-icon>
+    <span class="app-title">Web SSMS</span>
+
+    <div class="connection-info">
+      <mat-icon>dns</mat-icon>
+      <span>{{ auth.connection()?.server }}</span>
+      <mat-icon>person</mat-icon>
+      <span>{{ auth.connection()?.user }}</span>
+    </div>
+
+    <span class="spacer"></span>
+
+    <!-- Menu Administration -->
+    <button mat-button [matMenuTriggerFor]="adminMenu" class="admin-btn">
+      <mat-icon>admin_panel_settings</mat-icon>
+      Administration
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #adminMenu="matMenu" class="dark-menu">
+      <button mat-menu-item (click)="openCreateDb()">
+        <mat-icon>add_circle</mat-icon> Créer une base de données
+      </button>
+      <button mat-menu-item (click)="openDeleteDb()">
+        <mat-icon>remove_circle</mat-icon> Supprimer une base de données
+      </button>
+      <mat-divider />
+      <button mat-menu-item (click)="openCreateLogin()">
+        <mat-icon>person_add</mat-icon> Créer un login
+      </button>
+      <button mat-menu-item (click)="openDeleteLogin()">
+        <mat-icon>person_remove</mat-icon> Supprimer un login
+      </button>
+      <mat-divider />
+      <button mat-menu-item (click)="openBackup()">
+        <mat-icon>backup</mat-icon> Sauvegarder une base
+      </button>
+    </mat-menu>
+
+    <button mat-icon-button matTooltip="Déconnexion" (click)="disconnect()" class="disconnect-btn">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- Version info bar -->
+  <div class="version-bar">
+    {{ auth.connection()?.version }}
+  </div>
+
+  <!-- Main content: explorer + editor -->
+  <div class="main-content">
+    <app-object-explorer
+      [refreshTick]="_refreshTick"
+      (dbSelected)="onDatabaseSelected($event)" />
+
+    <app-query-editor [selectedDb]="selectedDb" [refreshTick]="_refreshTick" />
+  </div>
+
+</div>

@@ -1,0 +1,63 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <div class="login-header">
+        <mat-icon class="db-icon">storage</mat-icon>
+        <div>
+          <h1>Web SSMS</h1>
+          <p>SQL Server Management Studio</p>
+        </div>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (ngSubmit)="connect()" #loginForm="ngForm">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Serveur</mat-label>
+          <mat-icon matPrefix>dns</mat-icon>
+          <input matInput [(ngModel)]="server" name="server" placeholder="localhost" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Port</mat-label>
+          <mat-icon matPrefix>settings_ethernet</mat-icon>
+          <input matInput type="number" [(ngModel)]="port" name="port" placeholder="1433" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Identifiant SQL</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput [(ngModel)]="username" name="username" placeholder="sa" required autocomplete="username" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Mot de passe</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="password"
+            name="password" required autocomplete="current-password" />
+          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        @if (error) {
+          <div class="error-box">
+            <mat-icon>error_outline</mat-icon>
+            <span>{{ error }}</span>
+          </div>
+        }
+
+        <button mat-raised-button color="primary" type="submit" class="full-width connect-btn" [disabled]="loading">
+          @if (loading) {
+            <mat-spinner diameter="20" />
+          } @else {
+            <mat-icon>power_settings_new</mat-icon>
+            Connexion
+          }
+        </button>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

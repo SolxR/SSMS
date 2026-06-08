@@ -1,0 +1,73 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$primary: mat.define-palette(mat.$blue-palette, 400);
+$accent:  mat.define-palette(mat.$blue-grey-palette, 400);
+
+$dark-theme: mat.define-dark-theme((
+  color: (primary: $primary, accent: $accent),
+  density: -1
+));
+
+@include mat.all-component-themes($dark-theme);
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background: #0d1117;
+  color: #c9d1d9;
+}
+
+/* Dialog dark styling */
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #1e2530 !important;
+  --mdc-dialog-subhead-color: #e6edf3 !important;
+  --mdc-dialog-supporting-text-color: #c9d1d9 !important;
+  border: 1px solid #30363d;
+  border-radius: 8px !important;
+}
+
+.mat-mdc-dialog-title { color: #e6edf3 !important; }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #161b22; }
+::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+/* Select panel dark */
+.mat-mdc-select-panel {
+  background: #1e2530 !important;
+  border: 1px solid #30363d !important;
+}
+
+.mat-mdc-option {
+  color: #c9d1d9 !important;
+  &:hover, &.mat-mdc-option-active { background: #21262d !important; }
+  &.mdc-list-item--selected { background: #1f2d3d !important; color: #79c0ff !important; }
+}
+
+/* Menu dark */
+.mat-mdc-menu-panel {
+  background: #1e2530 !important;
+  border: 1px solid #30363d !important;
+  min-width: 220px !important;
+}
+
+.mat-mdc-menu-item {
+  color: #c9d1d9 !important;
+  .mat-icon { color: #8b949e !important; }
+  &:hover { background: #21262d !important; }
+}
+
+/* Snackbar */
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: #1e2530;
+  --mdc-snackbar-supporting-text-color: #c9d1d9;
+  border: 1px solid #30363d;
+}

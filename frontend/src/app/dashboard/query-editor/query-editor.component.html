@@ -1,0 +1,101 @@
+<div class="editor-panel">
+
+  <!-- Toolbar éditeur -->
+  <div class="editor-toolbar">
+    <mat-select [(ngModel)]="activeDb" placeholder="Base de données" class="db-selector">
+      <mat-option [value]="null">— (master) —</mat-option>
+      @for (db of databases; track db.name) {
+        <mat-option [value]="db.name">{{ db.name }}</mat-option>
+      }
+    </mat-select>
+
+    <button mat-flat-button color="primary" (click)="execute()" [disabled]="loading" class="exec-btn"
+            matTooltip="Exécuter (Ctrl+Entrée / F5)">
+      <mat-icon>play_arrow</mat-icon>
+      Exécuter
+    </button>
+
+    <span class="spacer"></span>
+
+    @if (result) {
+      <span class="elapsed">{{ result.elapsed }} ms</span>
+    }
+  </div>
+
+  @if (loading) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+
+  <!-- Zone CodeMirror -->
+  <div class="cm-container" #cmHost></div>
+
+  <!-- Résultats -->
+  <div class="results-panel">
+    <div class="results-tabs">
+      <button class="tab-btn" [class.active]="activeTab === 0" (click)="activeTab = 0">
+        <mat-icon>table_chart</mat-icon> Résultats
+        @if (result?.recordsets?.[0]?.length) {
+          <span class="tab-count">{{ result!.recordsets[0].length }}</span>
+        }
+      </button>
+      <button class="tab-btn" [class.active]="activeTab === 1" (click)="activeTab = 1">
+        <mat-icon>message</mat-icon> Messages
+      </button>
+    </div>
+
+    <div class="results-content">
+
+      <!-- Onglet résultats -->
+      @if (activeTab === 0) {
+        @if (error) {
+          <div class="result-error">
+            <mat-icon>error</mat-icon>
+            <pre>{{ error }}</pre>
+          </div>
+        } @else if (result && result.recordsets.length > 0 && result.recordsets[0].length > 0) {
+          <div class="table-scroll">
+            <table class="result-table">
+              <thead>
+                <tr>
+                  <th class="row-num">#</th>
+                  @for (col of getColumns(result.recordsets[0]); track col) {
+                    <th>{{ col }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of result.recordsets[0]; track $index) {
+                  <tr>
+                    <td class="row-num">{{ $index + 1 }}</td>
+                    @for (col of getColumns(result.recordsets[0]); track col) {
+                      <td [class.null-cell]="isNull(row[col])">{{ formatCell(row[col]) }}</td>
+                    }
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else if (result) {
+          <div class="no-results">Aucun enregistrement retourné.</div>
+        } @else {
+          <div class="no-results">Exécutez une requête pour voir les résultats.</div>
+        }
+      }
+
+      <!-- Onglet messages -->
+      @if (activeTab === 1) {
+        <div class="messages">
+          @if (error) {
+            <span class="msg-error"><mat-icon>error</mat-icon> {{ error }}</span>
+          } @else if (result) {
+            <span class="msg-ok"><mat-icon>check_circle</mat-icon> {{ result.message }}</span>
+          } @else {
+            <span class="msg-empty">Aucun message.</span>
+          }
+        </div>
+      }
+
+    </div>
+  </div>
+
+</div>

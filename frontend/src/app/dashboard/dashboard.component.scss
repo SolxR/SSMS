@@ -1,0 +1,84 @@
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #0d1117;
+  overflow: hidden;
+}
+
+.toolbar {
+  background: #161b22 !important;
+  border-bottom: 1px solid #30363d;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 0 12px;
+  flex-shrink: 0;
+  gap: 8px;
+  z-index: 10;
+}
+
+.logo-icon {
+  color: #388bfd;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.app-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e6edf3;
+  margin-right: 20px;
+}
+
+.connection-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #8b949e;
+  font-size: 0.8rem;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #388bfd;
+  }
+
+  span {
+    margin-right: 8px;
+    color: #c9d1d9;
+  }
+}
+
+.spacer { flex: 1; }
+
+.admin-btn {
+  color: #c9d1d9 !important;
+  font-size: 0.85rem;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+.disconnect-btn {
+  color: #8b949e !important;
+  &:hover { color: #f85149 !important; }
+}
+
+.version-bar {
+  background: #0d1117;
+  border-bottom: 1px solid #21262d;
+  padding: 2px 12px;
+  font-size: 0.7rem;
+  color: #484f58;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}

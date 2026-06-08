@@ -1,0 +1,106 @@
+<div class="explorer">
+  <div class="explorer-header">
+    <mat-icon>account_tree</mat-icon>
+    <span>Explorateur d'objets</span>
+    <button class="refresh-btn" (click)="load()" matTooltip="Actualiser">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
+  <!-- Bases de données -->
+  <div class="section">
+    <div class="section-header" (click)="dbsExpanded = !dbsExpanded">
+      <mat-icon class="chevron" [class.expanded]="dbsExpanded">chevron_right</mat-icon>
+      <mat-icon class="section-icon">folder_open</mat-icon>
+      <span>Bases de données</span>
+      @if (loadingDbs) {
+        <mat-spinner diameter="12" class="mini-spinner" />
+      } @else {
+        <span class="count">{{ databases.length }}</span>
+      }
+    </div>
+
+    @if (dbsExpanded) {
+      <div class="items">
+        @for (db of databases; track db.name) {
+
+          <!-- Ligne de la base -->
+          <div class="item db-item" [class.selected]="selectedDb === db.name">
+            <button class="expand-btn" (click)="toggleDb(db)" [matTooltip]="db.expanded ? 'Réduire' : 'Voir les tables'">
+              @if (db.loadingTables) {
+                <mat-spinner diameter="12" />
+              } @else {
+                <mat-icon class="chevron" [class.expanded]="db.expanded">chevron_right</mat-icon>
+              }
+            </button>
+            <mat-icon class="db-status-dot" [style.color]="getDbColor(db.state_desc)">circle</mat-icon>
+            <mat-icon class="item-icon">storage</mat-icon>
+            <span class="item-name" (click)="selectDb(db)"
+                  [matTooltip]="db.state_desc + ' — ' + db.recovery_model_desc">
+              {{ db.name }}
+            </span>
+          </div>
+
+          <!-- Tables dépliables -->
+          @if (db.expanded) {
+            <div class="sub-section">
+              <div class="sub-header">
+                <mat-icon>table_chart</mat-icon>
+                <span>Tables</span>
+                <span class="count">{{ db.tables.length }}</span>
+              </div>
+              @if (db.tables.length === 0 && !db.loadingTables) {
+                <div class="empty sub-item">Aucune table</div>
+              }
+              @for (table of db.tables; track table.name) {
+                <div class="item sub-item"
+                     (click)="selectDb(db)"
+                     [matTooltip]="table.column_count + ' colonne(s)'">
+                  <mat-icon class="item-icon table-icon">table_rows</mat-icon>
+                  <span class="item-name">{{ table.name }}</span>
+                  <span class="col-badge">{{ table.column_count }}</span>
+                </div>
+              }
+            </div>
+          }
+
+        }
+        @if (!loadingDbs && databases.length === 0) {
+          <div class="empty">Aucune base</div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Logins -->
+  <div class="section">
+    <div class="section-header" (click)="loginsExpanded = !loginsExpanded">
+      <mat-icon class="chevron" [class.expanded]="loginsExpanded">chevron_right</mat-icon>
+      <mat-icon class="section-icon">manage_accounts</mat-icon>
+      <span>Logins</span>
+      @if (loadingLogins) {
+        <mat-spinner diameter="12" class="mini-spinner" />
+      } @else {
+        <span class="count">{{ logins.length }}</span>
+      }
+    </div>
+
+    @if (loginsExpanded) {
+      <div class="items">
+        @for (login of logins; track login.name) {
+          <div class="item" [class.disabled]="login.is_disabled">
+            <mat-icon class="item-icon" [style.color]="login.is_disabled ? '#484f58' : '#388bfd'">
+              {{ login.type_desc === 'SQL_LOGIN' ? 'lock' : 'badge' }}
+            </mat-icon>
+            <span class="item-name" [matTooltip]="login.type_desc + (login.is_disabled ? ' (désactivé)' : '')">
+              {{ login.name }}
+            </span>
+          </div>
+        }
+        @if (!loadingLogins && logins.length === 0) {
+          <div class="empty">Aucun login</div>
+        }
+      </div>
+    }
+  </div>
+</div>
